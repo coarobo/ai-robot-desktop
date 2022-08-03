@@ -1,5 +1,3 @@
-# Built with arch: amd64 flavor: lxde image: ubuntu:20.04
-#
 ################################################################################
 # base system
 ################################################################################
@@ -114,12 +112,86 @@ RUN sed -i 's#app/locale/#novnc/app/locale/#' /src/web/dist/static/novnc/app/ui.
 # merge
 ################################################################################
 FROM system
-LABEL maintainer="fcwu.tw@gmail.com"
+LABEL maintainer="MASUTANI Yasuhiro <ai-robot-book@googlegroups.com>"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY rootfs /
 RUN ln -sf /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/frontend/static/novnc/utils/websockify && \
 	chmod +x /usr/local/lib/web/frontend/static/websockify/run
+
+
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
+RUN apt-get update -q && \
+    apt-get upgrade -yq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq wget curl git libc6-dev g++ build-essential vim sudo lsb-release locales bash-completion tzdata gosu && \
+    rm -rf /var/lib/apt/lists/*
+RUN wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
+    | gpg --dearmor \
+    | dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg && \
+    echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' \
+    | tee /etc/apt/sources.list.d/vscodium.list && \
+    apt-get update -q && \
+    apt-get -y install python3-pip && \
+    apt-get -y install language-pack-ja fonts-takao fcitx-mozc dbus-x11 && \
+    apt-get -y install codium && \
+    rm -rf /var/lib/apt/lists/*
+RUN useradd --create-home --home-dir /home/ubuntu --shell /bin/bash --user-group --groups adm,sudo ubuntu && \
+    echo ubuntu:ubuntu | chpasswd && \
+    echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+RUN gosu ubuntu echo 'export DONT_PROMPT_WSL_INSTALL=1' >> /home/ubuntu/.bashrc && \
+    gosu ubuntu bash -c "DONT_PROMPT_WSL_INSTALL=1 codium --install-extension ms-ceintl.vscode-language-pack-ja" && \
+    gosu ubuntu bash -c "DONT_PROMPT_WSL_INSTALL=1 codium --install-extension ms-python.python"
+
+ARG ROS_DISTRO=foxy
+ARG INSTALL_PACKAGE=desktop
+
+# rosdep initを除いたもの
+RUN apt-get update -q && \
+    apt-get install -y curl gnupg2 lsb-release && \
+    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
+    apt-get update -q && \
+    apt-get install -y ros-${ROS_DISTRO}-${INSTALL_PACKAGE} \
+    python3-argcomplete \
+    python3-colcon-common-extensions \
+    python3-rosdep python3-vcstool \
+    ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
+    rm -rf /var/lib/apt/lists/*
+
+# RUN apt-get update -q && \
+#     apt-get install -y curl gnupg2 lsb-release && \
+#     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+#     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
+#     apt-get update -q && \
+#     apt-get install -y ros-${ROS_DISTRO}-${INSTALL_PACKAGE} \
+#     python3-argcomplete \
+#     python3-colcon-common-extensions \
+#     python3-rosdep python3-vcstool \
+#     ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
+#     rosdep init && \
+#     rm -rf /var/lib/apt/lists/*
+
+RUN gosu ubuntu rosdep update && \
+    grep -F "source /opt/ros/${ROS_DISTRO}/setup.bash" /home/ubuntu/.bashrc || echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/ubuntu/.bashrc && \
+    sudo chown ubuntu:ubuntu /home/ubuntu/.bashrc
+
+# temporally fix to enable resize uri
+# https://github.com/fcwu/docker-ubuntu-vnc-desktop/pull/247
+RUN sed -i "s#location ~ .*/(api/.*|websockify) {#location ~ .*/(api/.*|websockify|resize) {#" /etc/nginx/sites-enabled/default
+
+ENV USER ubuntu
+
+# docker run の際に 以下のエラーを回避するために
+# ImportError: cannot import name 'soft_unicode' from 'markupsafe'
+# (/home/ubuntu/.local/lib/python3.8/site-packages/markupsafe/__init__.py)
+# werkzeugの問題回避
+# https://github.com/mjmeijer/donald_2021/issues/4
+RUN gosu ubuntu pip3 install werkzeug==2.0.3
+
+COPY ./ai-robot-book.sh /ai-robot-book.sh
+RUN mkdir -p /tmp/ros_setup_scripts_ubuntu && mv /ai-robot-book.sh /tmp/ros_setup_scripts_ubuntu/ && \
+    gosu ubuntu /tmp/ros_setup_scripts_ubuntu/ai-robot-book.sh
 
 EXPOSE 80
 WORKDIR /root

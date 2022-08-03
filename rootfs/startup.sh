@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#デバッグ用
+#set -vx
+
+update-locale LANG=ja_JP.UTF8
+
+export LANG=ja_JP.UTF8
+export TZ=Asia/Tokyo
+
 if [ -n "$VNC_PASSWORD" ]; then
     echo -n "$VNC_PASSWORD" > /.password1
     x11vnc -storepasswd $(cat /.password1) /.password2
@@ -22,7 +30,11 @@ fi
 
 USER=${USER:-root}
 HOME=/root
-if [ "$USER" != "root" ]; then
+if [ "$USER" == "ubuntu" ]; then
+    HOME=/home/$USER
+    cp -r /root/{.gtkrc-2.0,.asoundrc} ${HOME}
+    [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
+elif [ "$USER" != "root" ]; then
     echo "* enable custom user: $USER"
     useradd --create-home --shell /bin/bash --user-group --groups adm,sudo $USER
     if [ -z "$PASSWORD" ]; then
@@ -41,7 +53,7 @@ sed -i -e "s|%USER%|$USER|" -e "s|%HOME%|$HOME|" /etc/supervisor/conf.d/supervis
 if [ ! -x "$HOME/.config/pcmanfm/LXDE/" ]; then
     mkdir -p $HOME/.config/pcmanfm/LXDE/
     ln -sf /usr/local/share/doro-lxde-wallpapers/desktop-items-0.conf $HOME/.config/pcmanfm/LXDE/
-    chown -R $USER:$USER $HOME
+    chown -R $USER:$USER $HOME/.config/pcmanfm/LXDE
 fi
 
 # nginx workers
@@ -71,5 +83,22 @@ fi
 # clearup
 PASSWORD=
 HTTP_PASSWORD=
+
+### 別の場所で設定すべきかも
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export DefaultIMModule=fcitx
+###
+
+cat << EOF >> /etc/supervisor/conf.d/supervisord.conf
+
+[program:fcitx]
+priority=30
+directory=$HOME
+command=fcitx -D
+user=$USER
+environment=DISPLAY=":1",HOME="$HOME",USER="$USER"
+EOF
 
 exec /bin/tini -- supervisord -n -c /etc/supervisor/supervisord.conf
