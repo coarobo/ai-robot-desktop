@@ -4,10 +4,7 @@
 
 FROM ubuntu:20.04 as system
 
-
-
 RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
-
 
 # built-in packages
 ENV DEBIAN_FRONTEND noninteractive
@@ -21,6 +18,7 @@ RUN apt update \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+
 # install debs error if combine together
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
@@ -36,10 +34,6 @@ RUN apt update \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
-
-
-# Additional packages require ~600MB
-# libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
 
 # tini to fix subreap
 ARG TINI_VERSION=v0.18.0
@@ -66,9 +60,7 @@ RUN apt-get update \
 ################################################################################
 FROM ubuntu:20.04 as builder
 
-
 RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
-
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates gnupg patch
@@ -91,7 +83,6 @@ RUN cd /src/web \
 RUN sed -i 's#app/locale/#novnc/app/locale/#' /src/web/dist/static/novnc/app/ui.js
 
 
-
 ################################################################################
 # merge
 ################################################################################
@@ -102,7 +93,6 @@ COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY rootfs /
 RUN ln -sf /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/frontend/static/novnc/utils/websockify && \
 	chmod +x /usr/local/lib/web/frontend/static/websockify/run
-
 
 # RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
 RUN apt-get update -q && \
