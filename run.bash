@@ -14,4 +14,5 @@ docker run \
 --shm-size=512m \
 --privileged \
 --rm \
-airobotbook/ros2-desktop-ai-robot-book:ver0
+slim-test
+# airobotbook/ros2-desktop-ai-robot-book:ver0

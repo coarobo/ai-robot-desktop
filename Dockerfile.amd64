@@ -31,14 +31,6 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt update \
-    && apt install -y gpg-agent \
-    && curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && (dpkg -i ./google-chrome-stable_current_amd64.deb || apt-get install -fy) \
-    && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add \
-    && rm google-chrome-stable_current_amd64.deb \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
         lxde gtk2-engines-murrine gnome-themes-standard gtk2-engines-pixbuf gtk2-engines-murrine arc-theme \
     && apt autoclean -y \
@@ -53,14 +45,6 @@ RUN apt update \
 ARG TINI_VERSION=v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /bin/tini
 RUN chmod +x /bin/tini
-
-# ffmpeg
-RUN apt update \
-    && apt install -y --no-install-recommends --allow-unauthenticated \
-        ffmpeg \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir /usr/local/ffmpeg \
-    && ln -s /usr/bin/ffmpeg /usr/local/ffmpeg/ffmpeg
 
 # python library
 COPY rootfs/usr/local/lib/web/backend/requirements.txt /tmp/
@@ -120,7 +104,7 @@ RUN ln -sf /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/fron
 	chmod +x /usr/local/lib/web/frontend/static/websockify/run
 
 
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
+# RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
 RUN apt-get update -q && \
     apt-get upgrade -yq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq wget curl git libc6-dev g++ build-essential vim sudo lsb-release locales bash-completion tzdata gosu && \
@@ -147,6 +131,7 @@ ARG ROS_DISTRO=foxy
 ARG INSTALL_PACKAGE=desktop
 
 # rosdep initを除いたもの
+###
 RUN apt-get update -q && \
     apt-get install -y curl gnupg2 lsb-release && \
     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
@@ -158,7 +143,10 @@ RUN apt-get update -q && \
     python3-rosdep python3-vcstool \
     ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
     rm -rf /var/lib/apt/lists/*
+###
 
+# rosdep init するもの
+###
 # RUN apt-get update -q && \
 #     apt-get install -y curl gnupg2 lsb-release && \
 #     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
@@ -171,6 +159,7 @@ RUN apt-get update -q && \
 #     ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
 #     rosdep init && \
 #     rm -rf /var/lib/apt/lists/*
+###
 
 RUN gosu ubuntu rosdep update && \
     grep -F "source /opt/ros/${ROS_DISTRO}/setup.bash" /home/ubuntu/.bashrc || echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/ubuntu/.bashrc && \
