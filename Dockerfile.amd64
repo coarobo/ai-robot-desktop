@@ -84,6 +84,45 @@ RUN sed -i 's#app/locale/#novnc/app/locale/#' /src/web/dist/static/novnc/app/ui.
 
 
 ################################################################################
+# builder_rdp
+################################################################################
+FROM ubuntu:20.04 as builder_rdp
+
+# Install packages
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN sed -i "s/# deb-src/deb-src/g" /etc/apt/sources.list
+RUN apt-get -y update
+RUN apt-get -yy upgrade
+ENV BUILD_DEPS="git autoconf pkg-config libssl-dev libpam0g-dev \
+    libx11-dev libxfixes-dev libxrandr-dev nasm xsltproc flex \
+    bison libxml2-dev dpkg-dev libcap-dev"
+RUN apt-get -yy install  sudo apt-utils software-properties-common $BUILD_DEPS
+
+# Build xrdp
+
+WORKDIR /tmp
+RUN apt-get source pulseaudio
+RUN apt-get build-dep -yy pulseaudio
+WORKDIR /tmp/pulseaudio-13.99.1
+RUN dpkg-buildpackage -rfakeroot -uc -b
+WORKDIR /tmp
+RUN git clone --branch devel --recursive https://github.com/neutrinolabs/xrdp.git
+WORKDIR /tmp/xrdp
+RUN ./bootstrap
+RUN ./configure
+RUN make
+RUN make install
+WORKDIR /tmp
+RUN  apt -yy install libpulse-dev
+RUN git clone --recursive https://github.com/neutrinolabs/pulseaudio-module-xrdp.git
+WORKDIR /tmp/pulseaudio-module-xrdp
+RUN ./bootstrap && ./configure PULSE_DIR=/tmp/pulseaudio-13.99.1
+RUN make
+RUN mkdir -p /tmp/so
+RUN cp src/.libs/*.so /tmp/so
+
+################################################################################
 # merge
 ################################################################################
 FROM system
@@ -93,6 +132,27 @@ COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY rootfs /
 RUN ln -sf /usr/local/lib/web/frontend/static/websockify /usr/local/lib/web/frontend/static/novnc/utils/websockify && \
 	chmod +x /usr/local/lib/web/frontend/static/websockify/run
+
+RUN apt-get update -q && \
+    apt-get upgrade -yq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq crudini pulseaudio uuid-runtime xrdp locales && \
+    rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /var/lib/xrdp-pulseaudio-installer
+COPY --from=builder_rdp /tmp/so/module-xrdp-source.so /var/lib/xrdp-pulseaudio-installer
+COPY --from=builder_rdp /tmp/so/module-xrdp-sink.so /var/lib/xrdp-pulseaudio-installer
+COPY xrdp /etc
+
+# Configure
+RUN mkdir /var/run/dbus && \
+  cp /etc/X11/xrdp/xorg.conf /etc/X11 && \
+  sed -i "s/console/anybody/g" /etc/X11/Xwrapper.config && \
+  sed -i "s/xrdp\/xorg/xorg/g" /etc/xrdp/sesman.ini && \
+  locale-gen ja_JP.UTF-8 && \
+  echo "pulseaudio -D --enable-memfd=True" > /etc/skel/.Xsession && \
+  echo "export TZ=Asia/Tokyo" >> /etc/skel/.Xsession && \
+  echo "setxkbmap -model jp106 -layout jp" >> /etc/skel/.Xsession && \
+  echo "lxsession -s LXDE -e LXDE" >> /etc/skel/.Xsession && \
+  rm -rf /etc/xrdp/rsakeys.ini /etc/xrdp/*.pem
 
 # RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
 RUN apt-get update -q && \

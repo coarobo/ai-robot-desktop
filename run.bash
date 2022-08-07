@@ -11,8 +11,8 @@ docker run \
 -v ~/.config/pulse/cookie:/tmp/pulse/cookie:ro \
 --name ai_robot_book \
 -p 5900:5900 \
+-p 13389:3389 \
 --shm-size=512m \
 --privileged \
 --rm \
-slim-test
-# airobotbook/ros2-desktop-ai-robot-book:ver0
+airobotbook/ros2-desktop-ai-robot-book:rdp
