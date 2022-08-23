@@ -12,7 +12,8 @@ docker run \
 --name ai_robot_book \
 -p 5900:5900 \
 -p 13389:3389 \
+-p 6080:80 \
 --shm-size=512m \
 --privileged \
---rm \
-airobotbook/ros2-desktop-ai-robot-book:rdp
+$* \
+airobotbook/ros2-desktop-ai-robot-book:latest
