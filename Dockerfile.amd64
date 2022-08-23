@@ -148,10 +148,6 @@ RUN mkdir /var/run/dbus && \
   sed -i "s/console/anybody/g" /etc/X11/Xwrapper.config && \
   sed -i "s/xrdp\/xorg/xorg/g" /etc/xrdp/sesman.ini && \
   locale-gen ja_JP.UTF-8 && \
-  echo "pulseaudio -D --enable-memfd=True" > /etc/skel/.Xsession && \
-  echo "export TZ=Asia/Tokyo" >> /etc/skel/.Xsession && \
-  echo "setxkbmap -model jp106 -layout jp" >> /etc/skel/.Xsession && \
-  echo "lxsession -s LXDE -e LXDE" >> /etc/skel/.Xsession && \
   rm -rf /etc/xrdp/rsakeys.ini /etc/xrdp/*.pem
 
 # RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
@@ -168,6 +164,7 @@ RUN wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/p
     apt-get -y install python3-pip && \
     apt-get -y install language-pack-ja fonts-takao fcitx-mozc dbus-x11 && \
     apt-get -y install codium && \
+    apt-get -y install xscreensaver && \
     rm -rf /var/lib/apt/lists/*
 RUN useradd --create-home --home-dir /home/ubuntu --shell /bin/bash --user-group --groups adm,sudo ubuntu && \
     echo ubuntu:ubuntu | chpasswd && \

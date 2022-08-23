@@ -49,6 +49,20 @@ elif [ "$USER" != "root" ]; then
 fi
 sed -i -e "s|%USER%|$USER|" -e "s|%HOME%|$HOME|" /etc/supervisor/conf.d/supervisord.conf
 
+cat << EOF > ${HOME}/.xsession
+pulseaudio -D --enable-memfd=True
+export TZ=${TZ}
+export http_proxy=${http_proxy}
+export https_proxy=${https_proxy}
+export HTTP_PROXY=${HTTP_PROXY}
+export HTTPS_PROXY=${HTTPS_PROXY}
+lxsession -s LXDE -e LXDE
+EOF
+chown -R $USER:$USER ${HOME}/.xsession
+
+# Error No session for pid XXXX の回避のためlxpolkitを無効化
+mv /bin/lxpolkit /bin/lxpolkit.bak
+
 # home folder
 if [ ! -x "$HOME/.config/pcmanfm/LXDE/" ]; then
     mkdir -p $HOME/.config/pcmanfm/LXDE/
