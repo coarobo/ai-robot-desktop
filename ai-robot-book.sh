@@ -140,6 +140,24 @@ git clone https://github.com/AI-Robot-Book/appendixE
 cd ~/airobot_ws
 colcon build $colcon_build_options
 
+# Turtlebot2
+sudo -E apt-get -y install ros-foxy-gazebo-ros ros-foxy-camera-info-manager
+sudo -E apt-get -y install ros-foxy-realsense2-description
+sudo -E apt-get -y install ros-foxy-diagnostic-updater ros-foxy-ecl-linear-algebra ros-foxy-kobuki-core ros-foxy-xacro ros-foxy-joint-state-publisher
+sudo -E apt-get -y install ros-foxy-navigation2 ros-foxy-nav2-bringup
+sudo -E apt-get -y install ros-foxy-urg-node
+sudo -E apt-get -y install ros-foxy-tf-transformations
+sudo -E apt-get -y install ros-foxy-rqt-robot-steering
+
+cd ~/airobot_ws/src
+git clone https://github.com/kobuki-base/kobuki_ros_interfaces
+git clone -b foxy-devel https://github.com/pal-robotics/realsense_gazebo_plugin
+git clone https://github.com/AI-Robot-Book/kobuki_ros_airobotbook
+git clone https://github.com/AI-Robot-Book/turtlebot2_airobotbook
+
+cd ~/airobot_ws
+colcon build $colcon_build_options
+
 # 後処理
 
 echo "source ~/airobot_ws/install/setup.bash" >> ~/.bashrc
