@@ -56,8 +56,12 @@ export http_proxy=${http_proxy}
 export https_proxy=${https_proxy}
 export HTTP_PROXY=${HTTP_PROXY}
 export HTTPS_PROXY=${HTTPS_PROXY}
+sudo supervisorctl stop fcitx
+sed -i -e "s/EnabledIMList=/EnabledIMList=fcitx-keyboard-jp:True,/" -e "s/,fcitx-keyboard-jp:[^,]*//g" ${HOME}/.config/fcitx/profile
+fcitx-remote -r
 lxsession -s LXDE -e LXDE
 EOF
+
 chown -R $USER:$USER ${HOME}/.xsession
 
 # Error No session for pid XXXX の回避のためlxpolkitを無効化
