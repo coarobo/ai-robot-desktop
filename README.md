@@ -1,6 +1,4 @@
 # 「ROS2とPythonで作って学ぶAIロボット入門」の教材一式を提供するDockerイメージ
-升谷 保博  
-2022年8月
 
 ## 概要
 - [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)をフォーク．
@@ -18,43 +16,73 @@ cd docker-ros2-desktop-ai-robot-book
 ./build.bash
 ```
 
+## イメージの公開場所
+
+https://hub.docker.com/repository/docker/airobotbook/ros2-desktop-ai-robot-book
+
 ## 実行（Linux）
 
-### 専用のVNCビューアを使う場合
+### コンテナ起動
 
 ```
 ./run.bash
 ```
-VNCビューアで `172.0.0.1:5900` に接続．
-
 ### ウェブブラウザをVNCビューアにする場合
-```
-./run-web.bash
-```
-ウェブブラウザで `http://127.0.0.1:6080` にアクセス．
+
+`http://127.0.0.1:6080` にアクセス．
+
+### VNCビューア（Remminaなど）を使う場合
+
+`127.0.0.1:15900` に接続．
+
+### RDPクライアント（Remminaなど）を使う場合
+
+`127.0.0.1:13389` に接続．
 
 ## 実行（Windows）
 
-### 専用のVNCビューアを使う場合
+### コンテナ起動
 
 ```
-docker run -e RESOLUTION=1920x1080 --name ai_robot_book -p 5900:5900 --shm-size=512m --privileged --rm airobotbook/ros2-desktop-ai-robot-book:ver0
+run.bat
 ```
-VNCビューアで `172.0.0.1:5900` に接続．
 
 ### ウェブブラウザをVNCビューアにする場合
-```
-docker run -e RESOLUTION=1920x1080 --name ai_robot_book -p 6080:80 --shm-size=512m --privileged --rm airobotbook/ros2-desktop-ai-robot-book:ver0
-```
-ウェブブラウザで `http://127.0.0.1:6080` にアクセス．
+
+`http://127.0.0.1:6080` にアクセス．
+
+### VNCビューア（TightVNC Viewerなど）を使う場合
+
+`127.0.0.1:15900` に接続．
+
+### Windows標準のリモートデスクトップを使う場合
+
+`127.0.0.1:13389` に接続．
 
 ## 既知の問題・今後の課題
 
-- RDPサーバ機能を追加できないか？
+- オーディオ機能付きRDPサーバを使う場合，pyaudioを使う場合にreadがうまく行かない．
+- イメージのビルド中にrosdep initの実行に失敗する（現状ではrosdepを使わないようにしている）
 - 容量の削減
+
+## 著者
+
+升谷 保博
 
 ## 履歴
 
-- ver0
+- 2022/8/25
+  - オーディオ機能付きRDPサーバを組み込む．
+  - イメージサイズ： 9.8GB
+
+- 2022/8/4
   - [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)からフォークしたものにマージ．
   - イメージサイズ： 9.67GB
+
+## 参考文献
+
+- Doro Wu: A Docker image to provide web VNC interface to access Ubuntu LXDE/LxQT desktop environment, [GitHub fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)
+
+- Daisuke Sato: Dockerfiles to provide HTML5 VNC interface to access Ubuntu LXDE + ROS2, [GitHub tiryoh/ros2-desktop-vnc:foxy](https://github.com/Tiryoh/docker-ros2-desktop-vnc) 
+
+- danielguerra69: Ubuntu 20.04/18.04/16.04 Multi User Remote Desktop Server, [GitHub danielguerra69/ubuntu-xrdp](https://github.com/danielguerra69/ubuntu-xrdp)
