@@ -32,7 +32,8 @@ USER=${USER:-root}
 HOME=/root
 if [ "$USER" == "ubuntu" ]; then
     HOME=/home/$USER
-    cp -r /root/{.gtkrc-2.0,.asoundrc} ${HOME}
+    cp -r /root/{.gtkrc-2.0} ${HOME}
+    chown -R $USER:$USER ${HOME}
     [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
 elif [ "$USER" != "root" ]; then
     echo "* enable custom user: $USER"
@@ -43,7 +44,7 @@ elif [ "$USER" != "root" ]; then
     fi
     HOME=/home/$USER
     echo "$USER:$PASSWORD" | chpasswd
-    cp -r /root/{.config,.gtkrc-2.0,.asoundrc} ${HOME}
+    cp -r /root/{.config,.gtkrc-2.0} ${HOME}
     chown -R $USER:$USER ${HOME}
     [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
 fi
