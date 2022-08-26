@@ -79,6 +79,12 @@ run.bat
   - [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)からフォークしたものにマージ．
   - イメージサイズ： 9.67GB
 
+## ライセンス
+
+Copyright (c) 2022, MASUTANI Yasuhiro  
+All rights reserved.  
+This project is licensed under the Apache License 2.0 license found in the LICENSE file in the root directory of this project.
+
 ## 参考文献
 
 - Doro Wu: A Docker image to provide web VNC interface to access Ubuntu LXDE/LxQT desktop environment, [GitHub fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)
