@@ -46,6 +46,8 @@ cd ~/airobot_ws/src
 git clone https://github.com/AI-Robot-Book/chapter2
 cd ~/airobot_ws
 colcon build $colcon_build_options
+sudo -E apt-get -y install xterm
+sudo cp ~/airobot_ws/src/chapter2/turtlesim_launch/mysim.launch.py /opt/ros/foxy/share/turtlesim/launch
 
 # 第3章
 sudo -E apt-get -y install pulseaudio
@@ -76,6 +78,7 @@ git clone https://github.com/AI-Robot-Book/happy_mini_turtlebot3_sim
 cd ~/airobot_ws
 colcon build $colcon_build_options
 echo "export TURTLEBOT3_MODEL=happy_mini" >> ~/.bashrc
+cp -r ~/airobot_ws/src/chapter4/map ~
 
 # 第5章
 pip3 install opencv-contrib-python
