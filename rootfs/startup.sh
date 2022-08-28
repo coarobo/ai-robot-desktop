@@ -28,26 +28,6 @@ if [ -n "$RESOLUTION" ]; then
     sed -i "s/1024x768/$RESOLUTION/" /usr/local/bin/xvfb.sh
 fi
 
-USER=${USER:-root}
-HOME=/root
-if [ "$USER" == "ubuntu" ]; then
-    HOME=/home/$USER
-    cp -r /root/{.gtkrc-2.0} ${HOME}
-    chown -R $USER:$USER ${HOME}
-    [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
-elif [ "$USER" != "root" ]; then
-    echo "* enable custom user: $USER"
-    useradd --create-home --shell /bin/bash --user-group --groups adm,sudo $USER
-    if [ -z "$PASSWORD" ]; then
-        echo "  set default password to \"ubuntu\""
-        PASSWORD=ubuntu
-    fi
-    HOME=/home/$USER
-    echo "$USER:$PASSWORD" | chpasswd
-    cp -r /root/{.config,.gtkrc-2.0} ${HOME}
-    chown -R $USER:$USER ${HOME}
-    [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
-fi
 sed -i -e "s|%USER%|$USER|" -e "s|%HOME%|$HOME|" /etc/supervisor/conf.d/supervisord.conf
 
 cat << EOF > ${HOME}/.xsession
@@ -133,15 +113,5 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export DefaultIMModule=fcitx
 ###
-
-cat << EOF >> /etc/supervisor/conf.d/supervisord.conf
-
-[program:fcitx]
-priority=30
-directory=$HOME
-command=fcitx -D
-user=$USER
-environment=DISPLAY=":1",HOME="$HOME",USER="$USER"
-EOF
 
 exec /bin/tini -- supervisord -n -c /etc/supervisor/supervisord.conf
