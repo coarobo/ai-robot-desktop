@@ -153,7 +153,7 @@ RUN mkdir /var/run/dbus && \
 # RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
 RUN apt-get update -q && \
     apt-get upgrade -yq && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq wget curl git libc6-dev g++ build-essential vim sudo lsb-release locales bash-completion tzdata gosu && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq wget curl git g++ build-essential vim sudo lsb-release locales bash-completion tzdata gosu && \
     rm -rf /var/lib/apt/lists/*
 RUN wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
     | gpg --dearmor \
