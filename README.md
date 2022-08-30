@@ -27,17 +27,13 @@ https://hub.docker.com/repository/docker/airobotbook/ros2-desktop-ai-robot-book
 ```
 ./run.bash
 ```
-### ウェブブラウザをVNCビューアにする場合
+### デスクトップの利用
 
-`http://127.0.0.1:6080` にアクセス．
+- ウェブブラウザをVNCビューアにする場合
+  - `http://127.0.0.1:6080` にアクセス．
 
-### VNCビューア（Remminaなど）を使う場合
-
-`127.0.0.1:15900` に接続．
-
-### RDPクライアント（Remminaなど）を使う場合
-
-`127.0.0.1:13389` に接続．
+- VNCビューア（Remminaなど）を使う場合
+  - `127.0.0.1:15900` に接続．
 
 ## 実行（Windows）
 
@@ -47,17 +43,16 @@ https://hub.docker.com/repository/docker/airobotbook/ros2-desktop-ai-robot-book
 run.bat
 ```
 
-### ウェブブラウザをVNCビューアにする場合
+### デスクトップの利用
 
-`http://127.0.0.1:6080` にアクセス．
+- ウェブブラウザをVNCビューアにする場合
+  - `http://127.0.0.1:6080` にアクセス．
 
-### VNCビューア（TightVNC Viewerなど）を使う場合
+- VNCビューア（TightVNC Viewerなど）を使う場合
+  - `127.0.0.1:15900` に接続．
 
-`127.0.0.1:15900` に接続．
-
-### Windows標準のリモートデスクトップを使う場合
-
-`127.0.0.1:13389` に接続．
+- Windows標準のリモートデスクトップを使う場合
+  - `127.0.0.1:13389` に接続．
 
 ## 既知の問題・今後の課題
 
