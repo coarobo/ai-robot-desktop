@@ -2,6 +2,7 @@
 
 ## 概要
 - [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)をフォーク．
+  - フォークした時点の内容は[develop](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/tree/develop)ブランチ．
   - オリジナルと違い，amd64, Ubuntu 20.04, LXDEしか想定していない．
 - [tiryoh/ros2-desktop-vnc:foxy](https://github.com/Tiryoh/docker-ros2-desktop-vnc) を真似して，ROS2の環境を追加．
 - VSCodium
