@@ -5,7 +5,7 @@ source /opt/ros/foxy/setup.bash
 set -eu
 set -v
 
-colcon_build_options='--symlink-install'
+colcon_build_options= # '--symlink-install'
 
 sudo -E apt-get update -q
 
@@ -90,7 +90,7 @@ sudo -E apt-get -y install ros-foxy-image-pipeline
 sudo -E apt-get -y install ros-foxy-usb-cam
 sudo -E apt-get -y install ros-foxy-realsense2-camera
 cd ~/airobot_ws
-git clone https://github.com/ultralytics/yolov5
+git clone -bv6.2 https://github.com/ultralytics/yolov5
 cd yolov5
 pip3 install -r requirements.txt
 cd ~/airobot_ws/src
@@ -166,9 +166,5 @@ colcon build $colcon_build_options
 echo "source ~/airobot_ws/install/setup.bash" >> ~/.bashrc
 
 set +u
-
-sudo -E rm -f /etc/apt/apt.conf.d/apt.conf
-
-source ~/airobot_ws/install/setup.bash
 
 sudo -E rm -rf /var/lib/apt/lists/*
