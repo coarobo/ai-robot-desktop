@@ -12,4 +12,4 @@ docker run ^
 --shm-size=512m ^
 --privileged ^
 %* ^
-airobotbook/ros2-desktop-ai-robot-book:latest
+airobotbook/ros2-desktop-ai-robot-book:unstable
