@@ -5,7 +5,7 @@ source /opt/ros/foxy/setup.bash
 set -eu
 set -v
 
-colcon_build_options= # '--symlink-install'
+colcon_build_options='--symlink-install'
 
 sudo -E apt-get update -q
 
