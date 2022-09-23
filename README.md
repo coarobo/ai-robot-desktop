@@ -1,4 +1,4 @@
-# 「ROS2とPythonで作って学ぶAIロボット入門」の教材一式を提供するDockerイメージ
+# 「ROS2とPythonで作って学ぶAIロボット入門」の教材一式を提供するDockerイメージの作成
 
 ## 概要
 - [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)をフォーク．
