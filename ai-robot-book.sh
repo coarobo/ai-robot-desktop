@@ -81,7 +81,7 @@ echo "export TURTLEBOT3_MODEL=happy_mini" >> ~/.bashrc
 cp -r ~/airobot_ws/src/chapter4/map ~
 
 # 第5章
-pip3 install opencv-contrib-python
+pip3 install opencv-contrib-python==4.5.5.64
 sudo -E apt-get -y install ros-foxy-vision-opencv
 sudo -E apt-get -y install ros-foxy-camera-calibration-parsers
 sudo -E apt-get -y install ros-foxy-camera-info-manager
