@@ -13,7 +13,7 @@ FROM arm32v7/{{image}} as system
 COPY --from=amd64 /usr/bin/qemu-arm-static /usr/bin/
 {%endif%}
 
-RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
+# RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
 
 # built-in packages
 ENV DEBIAN_FRONTEND noninteractive
