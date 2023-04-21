@@ -28,6 +28,11 @@ cd $TMPDIR
 download_model sun
 download_model ground_plane
 download_model table
+download_model wood_cube_5cm
+download_model cafe_table
+download_model first_2015_trash_can
+download_model table_marble
+download_model mailbox
 if [[ -d "models.gazebosim.org" ]]; then
 	cd "models.gazebosim.org"
 	for i in *; do tar -zvxf "$i/model.tar.gz"; done
@@ -127,6 +132,10 @@ ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/mod
 ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/ground%20plane
 ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/wood%20cube%205cm
 ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/table
+ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/cafe%20table
+ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/first%202015%20trash%20can
+ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/table%20marble
+ign fuel download -v 4 -u https://fuel.ignitionrobotics.org/1.0/openrobotics/models/mailbox
 
 # 第7章
 cd ~/airobot_ws/src
