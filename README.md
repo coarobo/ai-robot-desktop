@@ -1,94 +1,57 @@
-# 「ROS2とPythonで作って学ぶAIロボット入門」の教材一式を提供するDockerイメージの作成
+# Docker/ROS 2 Desktop for AI Robot Book
 
-## 概要
-- [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)をフォーク．
-  - フォークした時点の内容は[develop](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/tree/develop)ブランチ．
-  - オリジナルと違い，amd64, Ubuntu 20.04, LXDEしか想定していない．
-- [tiryoh/ros2-desktop-vnc:foxy](https://github.com/Tiryoh/docker-ros2-desktop-vnc) を真似して，ROS2の環境を追加．
-- VSCodium
-- 日本語環境
-- [「ROS2とPythonで作って学ぶAIロボット入門」](https://github.com/AI-Robot-Book/)に必要なライブラリ，パッケージ，サンプルプログラムを全て含む．
+This repository was forked from [AI-Robot-Book/docker-ros2-desktop-ai-robot-book](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book) that provides a containerized environment and teaching materials for the book "**ROS2とPythonで作って学ぶAIロボット入門**" published by Kodansha and written by Kosei Demura, Yoshinobu Hagiwara, Yasuhiro Masutani, and Jeffrey Too Chuan Tan.
 
-## イメージ作成
+This fork brings minor corrections and enhancements made by [Coarobo GK](https://coarobo.com/) for deploying the original materials in a cloud environment.
 
-```
-git clone --recursive https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book
-cd docker-ros2-desktop-ai-robot-book
-./build.bash
-```
+## Project History
 
-## イメージの公開場所
+> Note: The content below is retreived from the time of forking at commit [`ed9bbe1420`](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/tree/ed9bbe1420c790f4934ea0d9bb0918cd969d907f).
 
-https://hub.docker.com/repository/docker/airobotbook/ros2-desktop-ai-robot-book
+Original license:
+*   `LICENSE`: [AI-Robot-Book/docker-ros2-desktop-ai-robot-book/LICENSE](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/blob/ed9bbe1420c790f4934ea0d9bb0918cd969d907f/LICENSE)
 
-## 実行（Linux）
+Original documentation:
+*   `README.md`: [AI-Robot-Book/docker-ros2-desktop-ai-robot-book/README.md](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/blob/ed9bbe1420c790f4934ea0d9bb0918cd969d907f/README.md)
+*   `README-original.md`: [AI-Robot-Book/docker-ros2-desktop-ai-robot-book/README-original.md](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/blob/ed9bbe1420c790f4934ea0d9bb0918cd969d907f/README-original.md)
+*   `ARCHITECTURE.md`: [AI-Robot-Book/docker-ros2-desktop-ai-robot-book/ARCHITECTURE.md](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/blob/ed9bbe1420c790f4934ea0d9bb0918cd969d907f/ARCHITECTURE.md)
+*   `DEVELOPMENT.md`: [AI-Robot-Book/docker-ros2-desktop-ai-robot-book/DEVELOPMENT.md](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/blob/ed9bbe1420c790f4934ea0d9bb0918cd969d907f/DEVELOPMENT.md)
 
-### コンテナ起動
+## Initial Setup
 
-```
-./run.bash
-```
-### デスクトップの利用
+> Note: The Docker image was built and tested on Ubuntu 20.04 LTS on April 21, 2023.
 
-- ウェブブラウザをVNCビューアにする場合
-  - `http://127.0.0.1:6080` にアクセス．
+1.  Clone the Git repository:
+    ```bash
+    git clone --recursive https://gitlab+deploy-token-1977715:ADFWJWyzqqRfy3rtUZpc@gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book.git
+    ```
+2.  Pull the Docker image:
+    ```bash
+    docker login -u "gitlab+deploy-token-1977716" -p "SCh-JaCU2cdHoaQ6_YHY" registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book
+    docker pull registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book/ros2-desktop-ai-robot-book:latest
+    ```
+3.  Run the Docker container:
+    ```bash
+    cd docker-ros2-desktop-ai-robot-book/
+    ./run.bash
+    ```
+4.  Connect to the VNC desktop: [http://localhost:6080](http://localhost:6080)
 
-- VNCビューア（Remminaなど）を使う場合
-  - `127.0.0.1:15900` に接続．
+## Build Image
 
-## 実行（Windows）
+> Note: Only developers with write access to the registry can push a newer image.
 
-### コンテナ起動
-
-```
-run.bat
-```
-
-### デスクトップの利用
-
-- ウェブブラウザをVNCビューアにする場合
-  - `http://127.0.0.1:6080` にアクセス．
-
-- VNCビューア（TightVNC Viewerなど）を使う場合
-  - `127.0.0.1:15900` に接続．
-
-- Windows標準のリモートデスクトップを使う場合
-  - `127.0.0.1:13389` に接続．
-
-## 既知の問題・今後の課題
-
-- オーディオ機能付きRDPサーバを使う場合，pyaudioを使う場合にreadがうまく行かない．
-- イメージのビルド中にrosdep initの実行に失敗する（現状ではrosdepを使わないようにしている）
-- 容量の削減
-
-## 著者
-
-升谷 保博
-
-## 履歴
-
-- 2022/8/31 (v1.0)
-  - 書籍の発行に合わせて正式リリース
-  - イメージサイズ： 10GB
-
-- 2022/8/25
-  - オーディオ機能付きRDPサーバを組み込む．
-  - イメージサイズ： 9.8GB
-
-- 2022/8/4
-  - [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)からフォークしたものにマージ．
-  - イメージサイズ： 9.67GB
-
-## ライセンス
-
-Copyright (c) 2022, MASUTANI Yasuhiro  
-All rights reserved.  
-This project is licensed under the Apache License 2.0 license found in the LICENSE file in the root directory of this project.
-
-## 参考文献
-
-- Doro Wu: A Docker image to provide web VNC interface to access Ubuntu LXDE/LxQT desktop environment, [GitHub fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)
-
-- Daisuke Sato: Dockerfiles to provide HTML5 VNC interface to access Ubuntu LXDE + ROS2, [GitHub tiryoh/ros2-desktop-vnc:foxy](https://github.com/Tiryoh/docker-ros2-desktop-vnc) 
-
-- danielguerra69: Ubuntu 20.04/18.04/16.04 Multi User Remote Desktop Server, [GitHub danielguerra69/ubuntu-xrdp](https://github.com/danielguerra69/ubuntu-xrdp)
+1.  Clone the Git repository:
+    ```bash
+    git clone --recursive https://gitlab+deploy-token-1977715:ADFWJWyzqqRfy3rtUZpc@gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book.git
+    ```
+2.  Build the Docker image:
+    ```bash
+    cd docker-ros2-desktop-ai-robot-book/
+    ./build.bash
+    ```
+3.  Push the Docker image:
+    ```bash
+    docker login registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book
+    docker push registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book/ros2-desktop-ai-robot-book:latest
+    ```
