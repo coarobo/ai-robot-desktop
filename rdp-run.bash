@@ -10,4 +10,4 @@ docker run \
 --shm-size=512m \
 --privileged \
 $* \
-registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book/ros2-desktop-ai-robot-book:latest
+registry.gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop/ai-robot-image:latest

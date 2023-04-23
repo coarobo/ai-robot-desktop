@@ -1,8 +1,8 @@
 # Docker/ROS 2 Desktop for AI Robot Book
 
-This repository was forked from [AI-Robot-Book/docker-ros2-desktop-ai-robot-book](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book) that provides a containerized environment and teaching materials for the book "**ROS2とPythonで作って学ぶAIロボット入門**" published by Kodansha and written by Kosei Demura, Yoshinobu Hagiwara, Yasuhiro Masutani, and Jeffrey Too Chuan Tan.
+This repository was forked from [AI-Robot-Book/docker-ros2-desktop-ai-robot-book](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book) that provides a containerized environment and teaching materials for the book *｢ROS2とPythonで作って学ぶAIロボット入門｣* (also known as *"AI Robot Book"*) published by Kodansha and written by Kosei Demura, Yoshinobu Hagiwara, Yasuhiro Masutani, and Jeffrey Too Chuan Tan.
 
-This fork brings minor corrections and enhancements made by [Coarobo GK](https://coarobo.com/) for deploying the original materials in a cloud environment.
+This fork, renamed `ai-robot-desktop`, brings minor corrections and enhancements made by [Coarobo GK](https://coarobo.com/) for deploying the original materials in a cloud environment.
 
 ## Project History
 
@@ -19,20 +19,20 @@ Original documentation:
 
 ## Initial Setup
 
-> Note: The Docker image was built and tested on Ubuntu 20.04 LTS on April 21, 2023.
+> Note: The Docker image was built and tested on Ubuntu 20.04 LTS on April 23, 2023.
 
 1.  Clone the Git repository:
     ```bash
-    git clone --recursive https://gitlab+deploy-token-1977715:ADFWJWyzqqRfy3rtUZpc@gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book.git
+    git clone --recursive https://gitlab+deploy-token-1977715:ADFWJWyzqqRfy3rtUZpc@gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop.git
     ```
 2.  Pull the Docker image:
     ```bash
-    docker login -u "gitlab+deploy-token-1977716" -p "SCh-JaCU2cdHoaQ6_YHY" registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book
-    docker pull registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book/ros2-desktop-ai-robot-book:latest
+    docker login -u "gitlab+deploy-token-1977716" -p "SCh-JaCU2cdHoaQ6_YHY" registry.gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop
+    docker pull registry.gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop/ai-robot-image:latest
     ```
 3.  Run the Docker container:
     ```bash
-    cd docker-ros2-desktop-ai-robot-book/
+    cd ai-robot-desktop/
     ./run.bash
     ```
 4.  Connect to the VNC desktop: [http://localhost:6080](http://localhost:6080)
@@ -43,15 +43,15 @@ Original documentation:
 
 1.  Clone the Git repository:
     ```bash
-    git clone --recursive https://gitlab+deploy-token-1977715:ADFWJWyzqqRfy3rtUZpc@gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book.git
+    git clone --recursive https://gitlab+deploy-token-1977715:ADFWJWyzqqRfy3rtUZpc@gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop.git
     ```
 2.  Build the Docker image:
     ```bash
-    cd docker-ros2-desktop-ai-robot-book/
+    cd ai-robot-desktop/
     ./build.bash
     ```
 3.  Push the Docker image:
     ```bash
-    docker login registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book
-    docker push registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book/ros2-desktop-ai-robot-book:latest
+    docker login registry.gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop
+    docker push registry.gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop/ai-robot-image:latest
     ```

@@ -6,5 +6,5 @@ $* \
 --build-arg https_proxy=${https_proxy} \
 --build-arg HTTP_PROXY=${HTTP_PROXY} \
 --build-arg HTTPS_PROXY=${HTTPS_PROXY} \
--t registry.gitlab.com/coarobo/workspaces/ai-robot-book/docker-ros2-desktop-ai-robot-book/ros2-desktop-ai-robot-book \
+-t registry.gitlab.com/coarobo/workspaces/ai-robot-book/ai-robot-desktop/ai-robot-image \
 .
