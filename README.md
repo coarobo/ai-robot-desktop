@@ -7,7 +7,7 @@ AI Robot Desktop enables users to run ROS 2 simulations inside a Docker containe
 This repository was forked from [AI-Robot-Book/docker-ros2-desktop-ai-robot-book](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book) that provides a containerized environment and teaching materials for the book *｢ROS2とPythonで作って学ぶAIロボット入門｣* (also known as *"AI Robot Book"*) published by Kodansha and written by Kosei Demura, Yoshinobu Hagiwara, Yasuhiro Masutani, and Jeffrey Too Chuan Tan.
 This fork, renamed `ai-robot-desktop`, brings minor corrections and enhancements made by [Coarobo GK](https://coarobo.com/) for deploying the original materials in a cloud environment.
 
-## Project History
+## Original Work
 
 > **Note:** The content below is retrieved from the time of forking [AI-Robot-Book/docker-ros2-desktop-ai-robot-book](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book) at commit [`ed9bbe1420`](https://github.com/AI-Robot-Book/docker-ros2-desktop-ai-robot-book/tree/ed9bbe1420c790f4934ea0d9bb0918cd969d907f).
 
@@ -43,7 +43,7 @@ This fork, renamed `ai-robot-desktop`, brings minor corrections and enhancements
     ```
 4.  Connect to the VNC desktop: [http://localhost:6080](http://localhost:6080)
 
-## Build Image
+## Image Build
 
 > **Note:** The image was last built and tested on Ubuntu 20.04 LTS on April 23, 2023.
 
